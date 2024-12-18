@@ -1,10 +1,8 @@
 package dev.java10x.cadastrodeninjas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_cadastro")
@@ -16,6 +14,10 @@ public class NinjaModel {
     private String name;
     private String email;
     private int idade;
+
+    @ManyToOne
+    @JoinColumn(name = "missao_id")
+    private MissoesModel missao;
 
     public NinjaModel() {
     }
