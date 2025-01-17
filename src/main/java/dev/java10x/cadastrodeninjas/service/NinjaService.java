@@ -17,22 +17,22 @@ public class NinjaService {
     }
 
 
-    private List<NinjaModel> findAll() {
+    public List<NinjaModel> findAll() {
         return ninjaRepository.findAll();
     }
 
 
-    private NinjaModel findById(Long id) {
+    public NinjaModel findById(Long id) {
         Optional<NinjaModel> ninja = ninjaRepository.findById(id);
 
         return ninja.orElse(null);
     }
 
-    private NinjaModel save(NinjaModel ninja) {
+    public NinjaModel save(NinjaModel ninja) {
         return ninjaRepository.save(ninja);
     }
 
-    private void delete(Long id) {
+    public void delete(Long id) {
         findById(id);
         ninjaRepository.deleteById(id);
     }
