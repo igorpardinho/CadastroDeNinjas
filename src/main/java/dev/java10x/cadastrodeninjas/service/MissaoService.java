@@ -16,16 +16,16 @@ public class MissaoService {
         this.missaoRepository = missaoRepository;
     }
 
-    private List<MissaoModel> findAll() {
+    public List<MissaoModel> findAll() {
         return missaoRepository.findAll();
     }
 
-    private MissaoModel findById(Long id) {
+    public MissaoModel findById(Long id) {
         Optional<MissaoModel> missao = missaoRepository.findById(id);
         return missao.orElse(null);
     }
 
-    private MissaoModel update(MissaoModel missao) {
+    public MissaoModel update(MissaoModel missao) {
         Optional<MissaoModel> missaoOptional = missaoRepository.findById(missao.getId());
 
         if (missaoOptional.isEmpty()) {
@@ -39,7 +39,7 @@ public class MissaoService {
 
     }
 
-    private void delete(Long id){
+    public void delete(Long id) {
         findById(id);
         missaoRepository.deleteById(id);
     }
