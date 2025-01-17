@@ -32,6 +32,19 @@ public class NinjaService {
         return ninjaRepository.save(ninja);
     }
 
+    public NinjaModel update(NinjaModel ninja) {
+        Optional<NinjaModel> optionalNinjaModel = ninjaRepository.findById(ninja.getId());
+
+        if (optionalNinjaModel.isEmpty()) {
+            return null;
+        }
+        NinjaModel ninjaModel = optionalNinjaModel.get();
+        ninjaModel.setName(ninja.getName());
+        ninjaModel.setEmail(ninja.getEmail());
+        ninjaModel.setIdade(ninja.getIdade());
+        return ninjaRepository.save(ninjaModel);
+    }
+
     public void delete(Long id) {
         findById(id);
         ninjaRepository.deleteById(id);
