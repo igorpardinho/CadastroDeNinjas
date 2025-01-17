@@ -28,7 +28,7 @@ public class NinjaModel {
 
     @ManyToOne
     @JoinColumn(name = "missao_id")
-    private MissoesModel missao;
+    private MissaoModel missao;
 
 
 }
