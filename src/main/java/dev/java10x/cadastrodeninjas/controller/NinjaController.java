@@ -6,6 +6,7 @@ import dev.java10x.cadastrodeninjas.service.NinjaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -37,6 +38,12 @@ public class NinjaController {
     @PutMapping
     public ResponseEntity<NinjaModel> update(@RequestBody NinjaModel ninja) {
         return ResponseEntity.status(HttpStatus.OK).body(ninjaService.update(ninja));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<NinjaModel> delete(@PathVariable("id") Long id) {
+        ninjaService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
