@@ -35,13 +35,13 @@ public class NinjaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ninjaService.save(ninja));
     }
 
-    @PutMapping
-    public ResponseEntity<NinjaModel> update(@RequestBody NinjaModel ninja) {
-        return ResponseEntity.status(HttpStatus.OK).body(ninjaService.update(ninja));
+    @PutMapping("/{id}")
+    public ResponseEntity<NinjaModel> update(@PathVariable("id") Long id,@RequestBody NinjaModel ninja) {
+        return ResponseEntity.status(HttpStatus.OK).body(ninjaService.update(id,ninja));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<NinjaModel> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         ninjaService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
