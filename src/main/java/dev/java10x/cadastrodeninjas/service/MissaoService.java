@@ -25,14 +25,18 @@ public class MissaoService {
         return missao.orElse(null);
     }
 
-    public MissaoModel update(MissaoModel missao) {
-        Optional<MissaoModel> missaoOptional = missaoRepository.findById(missao.getId());
+    public MissaoModel save(MissaoModel missao) {
+        return missaoRepository.save(missao);
+    }
+
+    public MissaoModel update(Long id,MissaoModel missao) {
+        Optional<MissaoModel> missaoOptional = missaoRepository.findById(id);
 
         if (missaoOptional.isEmpty()) {
             return null;
         }
         MissaoModel missaoModel = missaoOptional.get();
-        missaoModel.setNome(missao.getNome());
+        missaoModel.setName(missao.getName());
         missaoModel.setDescription(missao.getDescription());
         missaoModel.setDifficult(missao.getDifficult());
         return missaoRepository.save(missaoModel);
