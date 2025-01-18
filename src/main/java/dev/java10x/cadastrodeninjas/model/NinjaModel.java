@@ -19,11 +19,13 @@ public class NinjaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 24,nullable = false)
     private String name;
 
-    @Column(unique = true)
+    @Column(length = 70, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private int idade;
 
     @ManyToOne
