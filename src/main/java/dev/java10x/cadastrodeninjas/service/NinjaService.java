@@ -32,19 +32,12 @@ public class NinjaService {
         return ninjaRepository.save(ninja);
     }
 
-    public NinjaModel update(Long id,NinjaModel ninja) {
-        Optional<NinjaModel> optionalNinjaModel = ninjaRepository.findById(id);
-
-        if (optionalNinjaModel.isEmpty()) {
-            return null;
+    public NinjaModel update(Long id, NinjaModel ninja) {
+        if (ninjaRepository.existsById(id)) {
+            ninja.setId(id);
+            return ninjaRepository.save(ninja);
         }
-        NinjaModel ninjaModel = optionalNinjaModel.get();
-        ninjaModel.setName(ninja.getName());
-        ninjaModel.setEmail(ninja.getEmail());
-        ninjaModel.setIdade(ninja.getIdade());
-        ninjaModel.setMissao(ninja.getMissao());
-
-        return ninjaRepository.save(ninjaModel);
+        return null;
     }
 
     public void delete(Long id) {
