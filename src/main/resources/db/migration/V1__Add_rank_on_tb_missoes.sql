@@ -1,0 +1,2 @@
+ALTER TABLE tb_missoes
+ADD COLUMN "rank" VARCHAR(250);
