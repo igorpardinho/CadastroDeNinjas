@@ -36,9 +36,9 @@ public class MissaoController {
         return ResponseEntity.status(HttpStatus.OK).body(missaoService.save(missaoModel));
     }
 
-    @PutMapping
-    public ResponseEntity<MissaoModel> update(@RequestBody MissaoModel missaoModel) {
-        return ResponseEntity.status(HttpStatus.OK).body(missaoService.update(missaoModel));
+    @PutMapping("/{id}")
+    public ResponseEntity<MissaoModel> update(@PathVariable("id")Long id, @RequestBody MissaoModel missaoModel) {
+        return ResponseEntity.status(HttpStatus.OK).body(missaoService.update(id,missaoModel));
     }
 
     @DeleteMapping("/{id}")
