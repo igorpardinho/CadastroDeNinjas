@@ -1,5 +1,6 @@
 package dev.java10x.cadastrodeninjas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,13 +21,17 @@ public class MissaoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    @Column(length = 24, nullable = false)
+    private String name;
 
+    @Column(length = 50, nullable = false)
     private String description;
 
+    @Column(length = 1, nullable = false)
     private String difficult;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "missao")
     private List<NinjaModel> ninjas;
 
