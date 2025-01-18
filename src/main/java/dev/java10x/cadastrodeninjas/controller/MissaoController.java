@@ -1,5 +1,6 @@
 package dev.java10x.cadastrodeninjas.controller;
 
+import dev.java10x.cadastrodeninjas.dto.MissaoDTO;
 import dev.java10x.cadastrodeninjas.model.MissaoModel;
 import dev.java10x.cadastrodeninjas.service.MissaoService;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,18 @@ public class MissaoController {
 
 
     @GetMapping
-    public ResponseEntity<List<MissaoModel>> findAll() {
+    public ResponseEntity<List<MissaoDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(missaoService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MissaoModel> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<MissaoDTO> findById(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(missaoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<MissaoModel> save(@RequestBody MissaoModel missaoModel) {
-        return ResponseEntity.status(HttpStatus.OK).body(missaoService.save(missaoModel));
+    public ResponseEntity<MissaoDTO> save(@RequestBody MissaoDTO missaoDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(missaoService.save(missaoDTO));
     }
 
     @PutMapping("/{id}")
