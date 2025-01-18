@@ -1,5 +1,7 @@
 package dev.java10x.cadastrodeninjas.service;
 
+import dev.java10x.cadastrodeninjas.dto.MissaoDTO;
+import dev.java10x.cadastrodeninjas.mapper.MissaoMapper;
 import dev.java10x.cadastrodeninjas.model.MissaoModel;
 import dev.java10x.cadastrodeninjas.repository.MissaoRepository;
 import org.springframework.stereotype.Service;
@@ -11,22 +13,25 @@ import java.util.Optional;
 public class MissaoService {
 
     private final MissaoRepository missaoRepository;
+    private final MissaoMapper missaoMapper;
 
-    public MissaoService(MissaoRepository missaoRepository) {
+    public MissaoService(MissaoRepository missaoRepository, MissaoMapper missaoMapper) {
         this.missaoRepository = missaoRepository;
+        this.missaoMapper = missaoMapper;
     }
 
-    public List<MissaoModel> findAll() {
-        return missaoRepository.findAll();
+    public List<MissaoDTO> findAll() {
+        return missaoRepository.findAll().stream().map(missaoMapper::map).toList();
     }
 
-    public MissaoModel findById(Long id) {
+    public MissaoDTO findById(Long id) {
         Optional<MissaoModel> missao = missaoRepository.findById(id);
-        return missao.orElse(null);
+        return missao.map(missaoMapper::map).orElse(null);
     }
 
-    public MissaoModel save(MissaoModel missao) {
-        return missaoRepository.save(missao);
+    public MissaoDTO save(MissaoDTO missaoDTO) {
+        MissaoModel missaoModel = missaoMapper.map(missaoDTO);
+        return missaoMapper.map(missaoRepository.save(missaoModel));
     }
 
     public MissaoModel update(Long id, MissaoModel missao) {

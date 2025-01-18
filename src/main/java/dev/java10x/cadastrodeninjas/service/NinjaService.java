@@ -1,5 +1,7 @@
 package dev.java10x.cadastrodeninjas.service;
 
+import dev.java10x.cadastrodeninjas.dto.NinjaDTO;
+import dev.java10x.cadastrodeninjas.mapper.NinjaMapper;
 import dev.java10x.cadastrodeninjas.model.NinjaModel;
 import dev.java10x.cadastrodeninjas.repository.NinjaRepository;
 import org.springframework.stereotype.Service;
@@ -11,25 +13,30 @@ import java.util.Optional;
 public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
+    private final NinjaMapper ninjaMapper;
 
-    public NinjaService(NinjaRepository ninjaRepository) {
+    public NinjaService(NinjaRepository ninjaRepository, NinjaMapper ninjaMapper) {
         this.ninjaRepository = ninjaRepository;
+        this.ninjaMapper = ninjaMapper;
     }
 
 
-    public List<NinjaModel> findAll() {
-        return ninjaRepository.findAll();
+    public List<NinjaDTO> findAll() {
+       return ninjaRepository.findAll().stream().map(ninjaMapper::map).toList();
+
     }
 
 
-    public NinjaModel findById(Long id) {
+    public NinjaDTO findById(Long id) {
         Optional<NinjaModel> ninja = ninjaRepository.findById(id);
 
-        return ninja.orElse(null);
+        return ninja.map(ninjaMapper::map).orElse(null);
+
     }
 
-    public NinjaModel save(NinjaModel ninja) {
-        return ninjaRepository.save(ninja);
+    public NinjaDTO save(NinjaDTO ninjaDTO) {
+        NinjaModel ninja = ninjaMapper.map(ninjaDTO);
+        return ninjaMapper.map(ninjaRepository.save(ninja));
     }
 
     public NinjaModel update(Long id, NinjaModel ninja) {
