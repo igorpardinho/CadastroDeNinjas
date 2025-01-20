@@ -1,41 +1,52 @@
 package dev.java10x.cadastrodeninjas.service;
 
+import dev.java10x.cadastrodeninjas.dto.NinjaDTO;
+import dev.java10x.cadastrodeninjas.mapper.NinjaMapper;
 import dev.java10x.cadastrodeninjas.model.NinjaModel;
 import dev.java10x.cadastrodeninjas.repository.NinjaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
 public class NinjaService {
 
     private final NinjaRepository ninjaRepository;
+    private final NinjaMapper ninjaMapper;
 
-    public NinjaService(NinjaRepository ninjaRepository) {
+    public NinjaService(NinjaRepository ninjaRepository, NinjaMapper ninjaMapper) {
         this.ninjaRepository = ninjaRepository;
+        this.ninjaMapper = ninjaMapper;
     }
 
 
-    public List<NinjaModel> findAll() {
-        return ninjaRepository.findAll();
+    public Page<NinjaDTO> findAll(Pageable pageable) {
+        return ninjaRepository.findAll(pageable).map(ninjaMapper::map);
+
     }
 
 
-    public NinjaModel findById(Long id) {
+    public NinjaDTO findById(Long id) {
         Optional<NinjaModel> ninja = ninjaRepository.findById(id);
 
-        return ninja.orElse(null);
+        return ninja.map(ninjaMapper::map).orElse(null);
+
     }
 
-    public NinjaModel save(NinjaModel ninja) {
-        return ninjaRepository.save(ninja);
+    public NinjaDTO save(NinjaDTO ninjaDTO) {
+        NinjaModel ninja = ninjaMapper.map(ninjaDTO);
+        return ninjaMapper.map(ninjaRepository.save(ninja));
     }
 
-    public NinjaModel update(Long id, NinjaModel ninja) {
-        if (ninjaRepository.existsById(id)) {
-            ninja.setId(id);
-            return ninjaRepository.save(ninja);
+    public NinjaDTO update(Long id, NinjaDTO ninjaDTO) {
+        Optional<NinjaModel> ninjaModel = ninjaRepository.findById(id);
+        if (ninjaModel.isPresent()) {
+            NinjaModel ninjaUpdate = ninjaMapper.map(ninjaDTO);
+            ninjaUpdate.setId(id);
+            return ninjaMapper.map(ninjaRepository.save(ninjaUpdate));
         }
         return null;
     }
