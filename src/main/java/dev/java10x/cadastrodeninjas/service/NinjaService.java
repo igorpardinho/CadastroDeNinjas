@@ -4,9 +4,11 @@ import dev.java10x.cadastrodeninjas.dto.NinjaDTO;
 import dev.java10x.cadastrodeninjas.mapper.NinjaMapper;
 import dev.java10x.cadastrodeninjas.model.NinjaModel;
 import dev.java10x.cadastrodeninjas.repository.NinjaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -21,8 +23,8 @@ public class NinjaService {
     }
 
 
-    public List<NinjaDTO> findAll() {
-       return ninjaRepository.findAll().stream().map(ninjaMapper::map).toList();
+    public Page<NinjaDTO> findAll(Pageable pageable) {
+        return ninjaRepository.findAll(pageable).map(ninjaMapper::map);
 
     }
 
@@ -39,10 +41,12 @@ public class NinjaService {
         return ninjaMapper.map(ninjaRepository.save(ninja));
     }
 
-    public NinjaModel update(Long id, NinjaModel ninja) {
-        if (ninjaRepository.existsById(id)) {
-            ninja.setId(id);
-            return ninjaRepository.save(ninja);
+    public NinjaDTO update(Long id, NinjaDTO ninjaDTO) {
+        Optional<NinjaModel> ninjaModel = ninjaRepository.findById(id);
+        if (ninjaModel.isPresent()) {
+            NinjaModel ninjaUpdate = ninjaMapper.map(ninjaDTO);
+            ninjaUpdate.setId(id);
+            return ninjaMapper.map(ninjaRepository.save(ninjaUpdate));
         }
         return null;
     }
