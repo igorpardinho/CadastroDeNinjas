@@ -2,13 +2,14 @@ package dev.java10x.cadastrodeninjas.controller;
 
 
 import dev.java10x.cadastrodeninjas.dto.NinjaDTO;
-import dev.java10x.cadastrodeninjas.model.NinjaModel;
 import dev.java10x.cadastrodeninjas.service.NinjaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -23,8 +24,8 @@ public class NinjaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<NinjaDTO>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(ninjaService.findAll());
+    public ResponseEntity<Page<NinjaDTO>> findAll(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(ninjaService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
@@ -39,8 +40,8 @@ public class NinjaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NinjaModel> update(@PathVariable("id") Long id,@RequestBody NinjaModel ninja) {
-        return ResponseEntity.status(HttpStatus.OK).body(ninjaService.update(id,ninja));
+    public ResponseEntity<NinjaDTO> update(@PathVariable("id") Long id, @RequestBody NinjaDTO ninja) {
+        return ResponseEntity.status(HttpStatus.OK).body(ninjaService.update(id, ninja));
     }
 
     @DeleteMapping("/{id}")
