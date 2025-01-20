@@ -1,13 +1,13 @@
 package dev.java10x.cadastrodeninjas.controller;
 
 import dev.java10x.cadastrodeninjas.dto.MissaoDTO;
-import dev.java10x.cadastrodeninjas.model.MissaoModel;
 import dev.java10x.cadastrodeninjas.service.MissaoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -23,8 +23,8 @@ public class MissaoController {
 
 
     @GetMapping
-    public ResponseEntity<List<MissaoDTO>> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(missaoService.findAll());
+    public ResponseEntity<Page<MissaoDTO>> findAll(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(missaoService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
@@ -38,8 +38,8 @@ public class MissaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MissaoModel> update(@PathVariable("id")Long id, @RequestBody MissaoModel missaoModel) {
-        return ResponseEntity.status(HttpStatus.OK).body(missaoService.update(id,missaoModel));
+    public ResponseEntity<MissaoDTO> update(@PathVariable("id") Long id, @RequestBody MissaoDTO missaoDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(missaoService.update(id, missaoDTO));
     }
 
     @DeleteMapping("/{id}")

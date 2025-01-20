@@ -4,9 +4,11 @@ import dev.java10x.cadastrodeninjas.dto.MissaoDTO;
 import dev.java10x.cadastrodeninjas.mapper.MissaoMapper;
 import dev.java10x.cadastrodeninjas.model.MissaoModel;
 import dev.java10x.cadastrodeninjas.repository.MissaoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -20,8 +22,8 @@ public class MissaoService {
         this.missaoMapper = missaoMapper;
     }
 
-    public List<MissaoDTO> findAll() {
-        return missaoRepository.findAll().stream().map(missaoMapper::map).toList();
+    public Page<MissaoDTO> findAll(Pageable pageable) {
+        return missaoRepository.findAll(pageable).map(missaoMapper::map);
     }
 
     public MissaoDTO findById(Long id) {
@@ -34,10 +36,12 @@ public class MissaoService {
         return missaoMapper.map(missaoRepository.save(missaoModel));
     }
 
-    public MissaoModel update(Long id, MissaoModel missao) {
-        if (missaoRepository.existsById(id)) {
-            missao.setId(id);
-            return missaoRepository.save(missao);
+    public MissaoDTO update(Long id, MissaoDTO missaoDTO) {
+        Optional<MissaoModel> missao = missaoRepository.findById(id);
+        if (missao.isPresent()) {
+            MissaoModel missaoUpdate = missaoMapper.map(missaoDTO);
+            missaoUpdate.setId(id);
+            return missaoMapper.map(missaoRepository.save(missaoUpdate));
         }
         return null;
     }
